@@ -1,0 +1,11 @@
+{
+  "dataset": "breastmnist",
+  "baseline_cnn_accuracy": 0.6858974358974359,
+  "baseline_cnn_model": "baseline_cnn.pt",
+  "config": {
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "num_epochs": 20,
+    "random_seed": 42
+  }
+}

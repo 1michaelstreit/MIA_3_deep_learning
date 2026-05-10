@@ -1,0 +1,16 @@
+# Hyperparameters for training your BreastLesionCNN.
+#
+# TODO: Adjust these values to improve model performance.
+#
+# Grading always uses the test split of BreastMNIST.
+# Extreme values (e.g. num_epochs > 100) may cause CI to time out.
+
+training:
+  batch_size: 32 # samples per gradient update (power of 2 recommended)
+  learning_rate: 0.001 # Adam optimiser learning rate
+  num_epochs: 20 # number of full passes over the training set
+  random_seed: 42 # fixed for reproducibility — do not change
+
+data:
+  dataset_name: breastmnist
+  data_root: ./data
