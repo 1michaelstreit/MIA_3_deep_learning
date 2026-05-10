@@ -31,24 +31,24 @@ class BreastLesionCNN(nn.Module):
             # Single conv block — 28×28 → 14×14
 
 
-            nn.Conv2d(1, 32, kernel_size=5, padding=2),
-            nn.BatchNorm2d(32),
+            nn.Conv2d(1, 24, kernel_size=5, padding=2),
+            nn.BatchNorm2d(24),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(2),
 
-            nn.Conv2d(32, 64, kernel_size=3, padding=1),
-            nn.BatchNorm2d(64),
+            nn.Conv2d(24, 48, kernel_size=3, padding=1),
+            nn.BatchNorm2d(48),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(2),
 
-            nn.Conv2d(64, 128, kernel_size=3, padding=1),
-            nn.BatchNorm2d(128),
+            nn.Conv2d(48, 96, kernel_size=3, padding=1),
+            nn.BatchNorm2d(96),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(2),
 
             # compress features before classifier
-            nn.Conv2d(128, 64, 1),
-            nn.BatchNorm2d(64),
+            nn.Conv2d(96, 48, 1),
+            nn.BatchNorm2d(48),
             nn.ReLU(inplace=True),
             
             nn.AdaptiveAvgPool2d((1, 1)),
@@ -57,7 +57,7 @@ class BreastLesionCNN(nn.Module):
         
         self.head = nn.Sequential(
             nn.Flatten(), 
-            nn.Linear(64, num_classes))
+            nn.Linear(48, num_classes))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.head(self.features(x))
