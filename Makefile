@@ -2,14 +2,17 @@
 
 VENV_DIR := .venv
 UV       := uv
-PY       := $(VENV_DIR)/bin/python
 
 ifeq ($(OS),Windows_NT)
+	PY := $(VENV_DIR)/Scripts/python.exe
+
 	GREEN  :=
 	YELLOW :=
 	BLUE   :=
 	NC     :=
 else
+	PY := $(VENV_DIR)/bin/python
+
 	GREEN  := \033[0;32m
 	YELLOW := \033[0;33m
 	BLUE   := \033[0;34m
@@ -40,15 +43,23 @@ help:
 setup:
 	@command -v $(UV) >/dev/null 2>&1 || \
 		(echo "$(YELLOW)uv not found. Install from https://docs.astral.sh/uv/$(NC)" && exit 1)
+
 	@if [ ! -d "$(VENV_DIR)" ]; then \
 		$(UV) venv --python 3.12 $(VENV_DIR); \
 		echo "$(GREEN)Virtual environment created at $(VENV_DIR)$(NC)"; \
 	else \
 		echo "$(YELLOW)Virtual environment already exists — skipping creation$(NC)"; \
 	fi
+
 	@$(UV) pip install --python $(PY) -r requirements.txt
+
 	@echo "$(GREEN)Setup complete.$(NC)"
+
+ifeq ($(OS),Windows_NT)
+	@echo "Activate with: .venv\\Scripts\\Activate.ps1"
+else
 	@echo "Activate with: source $(VENV_DIR)/bin/activate"
+endif
 
 # ── Reference model ───────────────────────────────────────────────────────────
 
@@ -73,10 +84,15 @@ test:
 # ── Cleanup ───────────────────────────────────────────────────────────────────
 
 clean:
+ifeq ($(OS),Windows_NT)
+	@if exist .pytest_cache rmdir /s /q .pytest_cache
+	@if exist $(VENV_DIR) rmdir /s /q $(VENV_DIR)
+else
 	find . -name '__pycache__' -not -path './$(VENV_DIR)/*' -exec rm -rf {} + 2>/dev/null || true
 	find . -name '*.pyc' -not -path './$(VENV_DIR)/*' -delete 2>/dev/null || true
 	rm -rf .pytest_cache
 	rm -rf $(VENV_DIR)
+endif
 	@echo "$(GREEN)Clean done.$(NC)"
 
 # ── Instructor only ───────────────────────────────────────────────────────────
