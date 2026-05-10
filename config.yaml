@@ -8,7 +8,7 @@
 training:
   batch_size: 32 # samples per gradient update (power of 2 recommended)
   learning_rate: 0.001 # Adam optimiser learning rate
-  num_epochs: 20 # number of full passes over the training set
+  num_epochs: 25 # number of full passes over the training set
   random_seed: 42 # fixed for reproducibility — do not change
 
 data:
